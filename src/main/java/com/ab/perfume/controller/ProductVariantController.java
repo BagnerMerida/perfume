@@ -14,6 +14,7 @@ import java.util.List;
 @RequestMapping("/api/product-variants")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ProductVariantController {
 
     private final ProductVariantService productVariantService;

@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/product-images")
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "*")
 public class ProductImageController {
 
     private final ProductImageService productImageService;
