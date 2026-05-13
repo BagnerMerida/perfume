@@ -87,4 +87,28 @@ public class ProductController {
         return ResponseEntity.ok(productService.findBestSellers());
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity<List<ProductResponseDTO>> filterProducts(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Gender gender,
+            @RequestParam(required = false) Long brandId,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Boolean featured,
+            @RequestParam(required = false) Boolean isNew,
+            @RequestParam(required = false) Boolean bestSeller
+    ) {
+
+        return ResponseEntity.ok(
+                productService.filterProducts(
+                        search,
+                        gender,
+                        brandId,
+                        categoryId,
+                        featured,
+                        isNew,
+                        bestSeller
+                )
+        );
+    }
+
 }

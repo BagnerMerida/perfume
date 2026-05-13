@@ -28,4 +28,16 @@ public interface ProductService {
 
     List<ProductResponseDTO> findBestSellers();
 
+    List<ProductResponseDTO> filterProducts(
+            String search,
+            Gender gender,
+            Long brandId,
+            Long categoryId,
+            Boolean featured,
+            Boolean isNew,
+            Boolean bestSeller
+    );
+
+    ProductResponseDTO getBySlug(String slug);
+
 }

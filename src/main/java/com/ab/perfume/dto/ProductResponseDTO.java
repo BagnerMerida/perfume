@@ -36,4 +36,9 @@ public class ProductResponseDTO {
     private List<ProductVariantResponseDTO> variants;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    private Long viewsCount;
+    private Long searchCount;
+    private Long salesCount;
+    private Long cartCount;
 }

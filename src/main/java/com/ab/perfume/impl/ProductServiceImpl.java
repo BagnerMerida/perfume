@@ -185,8 +185,55 @@ public class ProductServiceImpl implements ProductService {
                 .bestSeller(product.getBestSeller())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
+                .viewsCount(product.getViewsCount())
+                .searchCount(product.getSearchCount())
+                .salesCount(product.getSalesCount())
+                .cartCount(product.getCartCount())
                 .build();
 
+    }
+
+    @Override
+    public List<ProductResponseDTO> filterProducts(
+            String search,
+            Gender gender,
+            Long brandId,
+            Long categoryId,
+            Boolean featured,
+            Boolean isNew,
+            Boolean bestSeller
+    ) {
+
+        String searchValue = search != null ? search.trim() : "";
+
+        return productRepository.filterProducts(
+                        ProductStatus.ACTIVE,
+                        searchValue,
+                        gender,
+                        brandId,
+                        categoryId,
+                        featured,
+                        isNew,
+                        bestSeller
+                )
+                .stream()
+                .map(this::toResponse)
+                .toList();
+
+    }
+
+    @Override
+    public ProductResponseDTO getBySlug(String slug) {
+
+        Product product = productRepository
+                .findBySlugAndStatus(slug, ProductStatus.ACTIVE)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        product.setViewsCount(product.getViewsCount() + 1);
+
+        productRepository.save(product);
+
+        return toResponse(product);
     }
 
 }

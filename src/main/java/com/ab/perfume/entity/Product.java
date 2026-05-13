@@ -75,6 +75,18 @@ public class Product {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "views_count", nullable = false)
+    private Long viewsCount = 0L;
+
+    @Column(name = "search_count", nullable = false)
+    private Long searchCount = 0L;
+
+    @Column(name = "sales_count", nullable = false)
+    private Long salesCount = 0L;
+
+    @Column(name = "cart_count", nullable = false)
+    private Long cartCount = 0L;
+
     @PrePersist
     public void prePersist() {
 
@@ -84,6 +96,10 @@ public class Product {
         if (this.featured == null) this.featured = false;
         if (this.isNew == null) this.isNew = false;
         if (this.bestSeller == null) this.bestSeller = false;
+        if (this.viewsCount == null) this.viewsCount = 0L;
+        if (this.searchCount == null) this.searchCount = 0L;
+        if (this.salesCount == null) this.salesCount = 0L;
+        if (this.cartCount == null) this.cartCount = 0L;
 
     }
 
