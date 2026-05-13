@@ -7,8 +7,10 @@ import com.ab.perfume.service.ProductImageService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,5 +43,21 @@ public class ProductImageController {
     ) {
         productImageService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ProductImageResponseDTO> uploadImage(
+            @RequestParam Long productId,
+            @RequestParam(required = false) Boolean mainImage,
+            @RequestParam(required = false) Integer displayOrder,
+            @RequestParam("file") MultipartFile file
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(productImageService.uploadImage(
+                        productId,
+                        mainImage,
+                        displayOrder,
+                        file
+                ));
     }
 }

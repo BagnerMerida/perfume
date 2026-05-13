@@ -1,5 +1,6 @@
 package com.ab.perfume.impl;
 
+import com.ab.perfume.config.UploadProperties;
 import com.ab.perfume.dto.ProductRequestDTO;
 import com.ab.perfume.dto.ProductResponseDTO;
 import com.ab.perfume.entity.Brand;
@@ -9,6 +10,7 @@ import com.ab.perfume.enums.Gender;
 import com.ab.perfume.enums.ProductStatus;
 import com.ab.perfume.repository.BrandRepository;
 import com.ab.perfume.repository.CategoryRepository;
+import com.ab.perfume.repository.ProductImageRepository;
 import com.ab.perfume.repository.ProductRepository;
 import com.ab.perfume.service.ProductService;
 import com.ab.perfume.util.SlugUtil;
@@ -26,6 +28,10 @@ public class ProductServiceImpl implements ProductService {
     private final BrandRepository brandRepository;
 
     private final CategoryRepository categoryRepository;
+
+    private final ProductImageRepository productImageRepository;
+
+    private final UploadProperties uploadProperties;
 
     @Override
     public ProductResponseDTO create(ProductRequestDTO request) {
@@ -165,6 +171,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private ProductResponseDTO toResponse(Product product) {
+        String mainImageUrl = productImageRepository
+                .findByProductIdAndMainImageTrue(product.getId())
+                .map(image -> uploadProperties.getLocionesUrl() + "/" + image.getImageUrl())
+                .orElse(null);
+
         return ProductResponseDTO.builder()
                 .id(product.getId())
                 .brandId(product.getBrand().getId())
@@ -189,6 +200,7 @@ public class ProductServiceImpl implements ProductService {
                 .searchCount(product.getSearchCount())
                 .salesCount(product.getSalesCount())
                 .cartCount(product.getCartCount())
+                .mainImageUrl(mainImageUrl)
                 .build();
 
     }
